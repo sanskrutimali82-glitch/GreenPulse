@@ -4,484 +4,749 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GreenPulse | Login & Register</title>
+<title>GreenPulse | Eco Passport</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#f5faf6;color:#183b2a}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+
+/* LOGIN AND REGISTER */
+
+.auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#d9f5df,#eff9e9,#c5e8cf)}
+.auth-container{width:950px;min-height:570px;display:grid;grid-template-columns:1fr 1fr;background:white;border-radius:25px;overflow:hidden;box-shadow:0 15px 45px rgba(22,83,48,.16)}
+.left-panel{background:linear-gradient(145deg,#145c38,#268653);color:white;padding:55px 40px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.left-panel:before{content:"";position:absolute;width:300px;height:300px;border:1px solid #ffffff30;border-radius:50%;right:-130px;top:-100px}
+.logo{font-size:27px;font-weight:bold;margin-bottom:65px;position:relative}
+.logo span{color:#b9ef8b}
+.left-panel h1{font-size:39px;line-height:1.2;margin-bottom:20px}
+.left-panel p{font-size:15px;line-height:1.8;color:#e1f4e5}
+.leaf{font-size:75px;margin-top:35px}
+.right-panel{padding:45px 48px;display:flex;flex-direction:column;justify-content:center}
+.form-box h2{font-size:29px;color:#185b39;margin-bottom:9px}
+.subtitle{color:#829187;font-size:14px;margin-bottom:28px}
+.input-group{margin-bottom:18px}
+.input-group label{display:block;font-size:13px;font-weight:600;color:#315b43;margin-bottom:8px}
+.input-group input{width:100%;padding:13px 14px;border:1px solid #d8e8dc;border-radius:10px;outline:none;font-size:14px;background:#fbfdfb}
+.input-group input:focus{border-color:#238653;box-shadow:0 0 0 3px #23865318}
+.password-wrap{position:relative}
+.password-wrap input{padding-right:65px}
+.toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#238653;font-size:12px;font-weight:bold}
+.main-btn{width:100%;padding:14px;border:0;border-radius:10px;background:#176b43;color:white;font-size:15px;font-weight:bold;margin-top:8px}
+.main-btn:hover{background:#104c30}
+.switch-text{text-align:center;margin-top:23px;color:#7b8b80;font-size:13px}
+.switch-text button{border:0;background:none;color:#176b43;font-weight:bold}
+.message{text-align:center;margin-top:15px;font-size:13px;color:#176b43;min-height:18px}
+.auth-footer{text-align:center;font-size:11px;color:#9aaa9f;margin-top:25px}
+
+/* MAIN WEBSITE */
+
+#app{min-height:100vh}
+.topbar{height:70px;background:white;border-bottom:1px solid #e2eee6;display:flex;align-items:center;justify-content:space-between;padding:0 4%;position:sticky;top:0;z-index:10}
+.topbar .logo{color:#176b43;margin:0;font-size:24px}
+.user-area{display:flex;align-items:center;gap:12px}
+.user-name{font-size:14px;font-weight:bold}
+.logout{border:0;background:#e9f7ef;color:#176b43;padding:10px 15px;border-radius:9px;font-weight:bold}
+.layout{display:grid;grid-template-columns:230px 1fr}
+.sidebar{background:white;border-right:1px solid #e2eee6;min-height:calc(100vh - 70px);padding:25px 15px}
+.nav-label{font-size:11px;color:#93a69a;font-weight:bold;letter-spacing:1px;padding:10px}
+.nav-link{width:100%;border:0;background:transparent;text-align:left;padding:13px;border-radius:10px;color:#60766a;font-weight:600;margin:3px 0}
+.nav-link:hover,.nav-link.active{background:#e9f7ef;color:#176b43}
+.main{padding:30px 4%;min-width:0}
+.page{display:none}
+.page.active{display:block}
+.page-head{margin-bottom:25px}
+.eyebrow{font-size:11px;letter-spacing:1.5px;color:#238b5a;font-weight:bold}
+.page-head h1{font-size:32px;margin:7px 0}
+.page-head p{color:#718578;font-size:14px}
+.welcome{background:linear-gradient(110deg,#e8f7ed,#f5fbf4);border:1px solid #dcefe1;border-radius:18px;padding:25px;margin-bottom:22px;display:flex;justify-content:space-between;align-items:center}
+.welcome h2{font-size:25px;margin:8px 0}
+.welcome p{font-size:14px;color:#5c7968}
+.welcome-art{font-size:55px}
+.grid{display:grid;gap:17px}
+.stats{grid-template-columns:repeat(4,1fr);margin-bottom:22px}
+.stat,.panel,.reward-card{background:white;border:1px solid #e2eee6;border-radius:16px;padding:20px;box-shadow:0 8px 25px #1a58300a}
+.stat small{color:#84958a;font-size:12px}
+.stat strong{display:block;font-size:27px;margin:12px 0 4px;color:#176b43}
+.stat-title{font-size:13px;color:#718578;font-weight:bold}
+.two-col{grid-template-columns:1.2fr .8fr}
+.panel{margin-bottom:18px}
+.panel h3{margin-bottom:8px}
+.panel-desc{font-size:13px;color:#718578;line-height:1.6;margin-bottom:15px}
+.progress{height:9px;background:#edf3ee;border-radius:20px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#238b5a,#a5d96b);border-radius:20px}
+.progress-meta{display:flex;justify-content:space-between;font-size:12px;color:#718578}
+.btn{border:0;border-radius:10px;padding:11px 16px;font-weight:bold}
+.btn-primary{background:#176b43;color:white}
+.btn-light{background:#e9f7ef;color:#176b43}
+.activity-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid #edf3ee}
+.activity-row:last-child{border-bottom:0}
+.activity-info{display:flex;align-items:center;gap:10px}
+.activity-icon{width:37px;height:37px;border-radius:10px;background:#eff8f1;display:grid;place-items:center;font-size:19px}
+.activity-info b{font-size:13px;display:block}
+.activity-info small{font-size:11px;color:#718578}
+.points{font-weight:bold;color:#176b43;font-size:13px;white-space:nowrap}
+.empty{text-align:center;padding:25px;color:#829187;font-size:13px}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 15px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:13px;font-weight:bold;color:#315b43;margin-bottom:7px}
+.field input,.field select{width:100%;padding:12px;border:1px solid #d8e8dc;border-radius:9px;background:#fbfdfb;outline:none}
+.result{display:none;padding:18px;background:#e9f7ef;border-radius:12px;margin-top:18px}
+.result strong{font-size:27px;color:#176b43}
+.reward-grid{grid-template-columns:repeat(3,1fr);margin:18px 0}
+.reward-card{text-align:center;padding:24px;position:relative;overflow:hidden}
+.reward-card:before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:var(--medal)}
+.medal{font-size:42px;margin:8px auto 13px;width:75px;height:75px;border-radius:50%;display:grid;place-items:center;background:var(--medal-bg)}
+.reward-card h3{margin-bottom:7px}
+.threshold{font-size:12px;color:#718578;margin-bottom:13px}
+.reward-status{display:inline-block;background:#f0f3f1;color:#65766c;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:bold}
+.reward-status.unlocked{background:#e4f6e9;color:#176b45}
+.reward-card small{font-size:11px;color:#718578}
+.bronze{--medal:#b97845;--medal-bg:#f8eadf}
+.silver{--medal:#8997a3;--medal-bg:#edf1f4}
+.gold{--medal:#d6a326;--medal-bg:#fff4d7}
+.passport{padding:30px;background:linear-gradient(125deg,#145b3d,#27885a);color:white;border-radius:18px}
+.passport h2{font-size:26px;margin:10px 0}
+.passport p{color:#d5efdf;font-size:13px;margin-bottom:20px}
+.passport-details{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:500px}
+.passport-details div{background:#ffffff19;padding:13px;border-radius:10px}
+.passport-details small{display:block;color:#c6e8d3;font-size:10px}
+.passport-details b{font-size:17px}
+.tip-grid{grid-template-columns:repeat(3,1fr)}
+.tip-card{padding:20px;background:white;border:1px solid #e2eee6;border-radius:15px}
+.tip-card .emoji{font-size:28px}
+.tip-card h3{font-size:15px;margin:12px 0 7px}
+.tip-card p{font-size:13px;color:#718578;line-height:1.6}
+.footer{text-align:center;color:#9aaa9f;font-size:11px;padding:25px 0}
+
+/* RESPONSIVE */
+
+@media(max-width:850px){
+.stats{grid-template-columns:repeat(2,1fr)}
+.two-col{grid-template-columns:1fr}
+.tip-grid{grid-template-columns:repeat(2,1fr)}
 }
-
-body {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #d9f5df, #eff9e9, #c5e8cf);
-    padding: 20px;
-}
-
-.container {
-    width: 950px;
-    min-height: 570px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    background: white;
-    border-radius: 25px;
-    overflow: hidden;
-    box-shadow: 0 15px 45px rgba(22, 83, 48, 0.16);
-}
-
-/* LEFT SIDE */
-
-.left-panel {
-    background: linear-gradient(145deg, #145c38, #268653);
-    color: white;
-    padding: 55px 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.left-panel::before {
-    content: "";
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    border: 1px solid rgba(255,255,255,.18);
-    border-radius: 50%;
-    right: -130px;
-    top: -100px;
-}
-
-.logo {
-    font-size: 27px;
-    font-weight: bold;
-    margin-bottom: 65px;
-    position: relative;
-}
-
-.logo span {
-    color: #b9ef8b;
-}
-
-.left-panel h1 {
-    font-size: 39px;
-    line-height: 1.2;
-    margin-bottom: 20px;
-}
-
-.left-panel p {
-    font-size: 15px;
-    line-height: 1.8;
-    color: #e1f4e5;
-}
-
-.leaf {
-    font-size: 75px;
-    margin-top: 35px;
-}
-
-/* RIGHT SIDE */
-
-.right-panel {
-    padding: 45px 48px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.form-box h2 {
-    font-size: 29px;
-    color: #185b39;
-    margin-bottom: 9px;
-}
-
-.subtitle {
-    color: #829187;
-    font-size: 14px;
-    margin-bottom: 28px;
-}
-
-.input-group {
-    margin-bottom: 18px;
-}
-
-.input-group label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: #315b43;
-    margin-bottom: 8px;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 13px 14px;
-    border: 1px solid #d8e8dc;
-    border-radius: 10px;
-    outline: none;
-    font-size: 14px;
-    background: #fbfdfb;
-}
-
-.input-group input:focus {
-    border-color: #238653;
-    box-shadow: 0 0 0 3px rgba(35,134,83,.10);
-}
-
-.password-wrap {
-    position: relative;
-}
-
-.password-wrap input {
-    padding-right: 65px;
-}
-
-.toggle {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: none;
-    background: transparent;
-    color: #238653;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.main-btn {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    background: #176b43;
-    color: white;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: .3s;
-}
-
-.main-btn:hover {
-    background: #104c30;
-    transform: translateY(-2px);
-}
-
-.switch-text {
-    text-align: center;
-    margin-top: 23px;
-    color: #7b8b80;
-    font-size: 13px;
-}
-
-.switch-text button {
-    border: none;
-    background: none;
-    color: #176b43;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.hidden {
-    display: none;
-}
-
-.message {
-    text-align: center;
-    margin-top: 15px;
-    font-size: 13px;
-    color: #176b43;
-    min-height: 18px;
-}
-
-.footer {
-    text-align: center;
-    font-size: 11px;
-    color: #9aaa9f;
-    margin-top: 25px;
-}
-
-/* MOBILE RESPONSIVE */
-
-@media(max-width: 750px) {
-    .container {
-        grid-template-columns: 1fr;
-        max-width: 450px;
-    }
-
-    .left-panel {
-        padding: 30px;
-        min-height: 230px;
-    }
-
-    .logo {
-        margin-bottom: 25px;
-    }
-
-    .left-panel h1 {
-        font-size: 28px;
-    }
-
-    .left-panel p {
-        font-size: 13px;
-    }
-
-    .leaf {
-        display: none;
-    }
-
-    .right-panel {
-        padding: 35px 25px;
-    }
+@media(max-width:700px){
+.auth-container{grid-template-columns:1fr;max-width:450px}
+.left-panel{padding:30px;min-height:220px}
+.left-panel .logo{margin-bottom:25px}
+.left-panel h1{font-size:28px}
+.left-panel p{font-size:13px}
+.leaf{display:none}
+.right-panel{padding:35px 25px}
+.layout{grid-template-columns:1fr}
+.sidebar{min-height:auto;display:flex;overflow-x:auto;padding:9px;border-right:0;border-bottom:1px solid #e2eee6}
+.nav-label{display:none}
+.nav-link{width:auto;white-space:nowrap;padding:10px;font-size:12px}
+.main{padding:22px 15px}
+.topbar{padding:0 15px}
+.topbar .logo{font-size:19px}
+.user-name{display:none}
+.reward-grid,.tip-grid{grid-template-columns:1fr}
+.page-head h1{font-size:27px}
+.form-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- LOGIN / REGISTER SCREEN -->
 
-    <!-- LEFT PANEL -->
+<section id="authScreen" class="auth-screen">
+<div class="auth-container">
 
-    <div class="left-panel">
+<div class="left-panel">
+<div class="logo">🌱 Green<span>Pulse</span></div>
+<h1>Small Actions.<br>Greener Planet.</h1>
+<p>Track your carbon footprint, record eco-friendly activities and make a positive difference towards a sustainable future.</p>
+<div class="leaf">🌿</div>
+</div>
 
-        <div class="logo">🌱 Green<span>Pulse</span></div>
+<div class="right-panel">
 
-        <h1>Small Actions.<br>Greener Planet.</h1>
+<div class="form-box" id="loginForm">
+<h2>Welcome Back!</h2>
+<p class="subtitle">Login to continue your green journey.</p>
 
-        <p>
-            Track your carbon footprint, record eco-friendly
-            activities and make a positive difference
-            towards a sustainable future.
-        </p>
+<form onsubmit="login(event)">
+<div class="input-group">
+<label>Email Address</label>
+<input type="email" id="loginEmail" placeholder="Enter your email" required>
+</div>
 
-        <div class="leaf">🌿</div>
+<div class="input-group">
+<label>Password</label>
+<div class="password-wrap">
+<input type="password" id="loginPassword" placeholder="Enter your password" required>
+<button type="button" class="toggle" onclick="togglePassword('loginPassword',this)">Show</button>
+</div>
+</div>
 
-    </div>
+<button type="submit" class="main-btn">Login →</button>
+</form>
 
-    <!-- RIGHT PANEL -->
+<p class="switch-text">Don't have an account?
+<button type="button" onclick="showRegister()">Register Now</button></p>
+</div>
 
-    <div class="right-panel">
+<div class="form-box hidden" id="registerForm">
+<h2>Create Account</h2>
+<p class="subtitle">Join GreenPulse and start your eco journey.</p>
 
-        <!-- LOGIN FORM -->
+<form onsubmit="register(event)">
+<div class="input-group">
+<label>Full Name</label>
+<input type="text" id="regName" placeholder="Enter your full name" required>
+</div>
 
-        <div class="form-box" id="loginForm">
+<div class="input-group">
+<label>Email Address</label>
+<input type="email" id="regEmail" placeholder="Enter your email" required>
+</div>
 
-            <h2>Welcome Back!</h2>
+<div class="input-group">
+<label>Password</label>
+<div class="password-wrap">
+<input type="password" id="regPassword" placeholder="Create password" minlength="4" required>
+<button type="button" class="toggle" onclick="togglePassword('regPassword',this)">Show</button>
+</div>
+</div>
 
-            <p class="subtitle">
-                Login to continue your green journey.
-            </p>
+<div class="input-group">
+<label>Confirm Password</label>
+<input type="password" id="confirmPassword" placeholder="Confirm password" required>
+</div>
 
-            <form onsubmit="login(event)">
+<button type="submit" class="main-btn">Create Account →</button>
+</form>
 
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" id="loginEmail"
-                    placeholder="Enter your email" required>
-                </div>
+<p class="switch-text">Already have an account?
+<button type="button" onclick="showLogin()">Login</button></p>
+</div>
 
-                <div class="input-group">
-                    <label>Password</label>
+<div id="authMessage" class="message"></div>
+<div class="auth-footer">© 2026 GreenPulse | Eco Passport Project 🌍</div>
 
-                    <div class="password-wrap">
-                        <input type="password" id="loginPassword"
-                        placeholder="Enter your password" required>
+</div>
+</div>
+</section>
 
-                        <button type="button" class="toggle"
-                        onclick="togglePassword('loginPassword',this)">
-                        Show
-                        </button>
-                    </div>
-                </div>
+<!-- MAIN WEBSITE AFTER LOGIN -->
 
-                <button type="submit" class="main-btn">
-                    Login →
-                </button>
+<div id="app" class="hidden">
 
-            </form>
+<header class="topbar">
+<div class="logo">🌱 GreenPulse</div>
+<div class="user-area">
+<span class="user-name" id="topName">User</span>
+<button class="logout" onclick="logout()">Logout</button>
+</div>
+</header>
 
-            <p class="switch-text">
-                Don't have an account?
-                <button onclick="showRegister()">Register Now</button>
-            </p>
+<div class="layout">
 
-        </div>
+<aside class="sidebar">
+<div class="nav-label">MAIN MENU</div>
+<button class="nav-link active" data-page="dashboard" onclick="navigate('dashboard')">🏠 Dashboard</button>
+<button class="nav-link" data-page="footprint" onclick="navigate('footprint')">🌍 Footprint Diary</button>
+<button class="nav-link" data-page="activities" onclick="navigate('activities')">🌱 Eco Activities</button>
+<button class="nav-link" data-page="rewards" onclick="navigate('rewards')">🏆 Rewards</button>
+<button class="nav-link" data-page="passport" onclick="navigate('passport')">📘 EcoPassport</button>
+<button class="nav-link" data-page="tips" onclick="navigate('tips')">💡 Eco Tips</button>
+</aside>
 
+<main class="main">
 
-        <!-- REGISTER FORM -->
+<!-- DASHBOARD -->
 
-        <div class="form-box hidden" id="registerForm">
+<section id="dashboard" class="page active">
+<div class="welcome">
+<div>
+<div class="eyebrow">YOUR GREEN JOURNEY</div>
+<h2>Welcome, <span id="welcomeName">Friend</span>! 🌿</h2>
+<p>Every small step makes a big difference. Keep going!</p>
+</div>
+<div class="welcome-art">🌳</div>
+</div>
 
-            <h2>Create Account</h2>
+<div class="grid stats">
+<div class="stat"><div class="stat-title">⭐ Eco Points</div><strong id="statPoints">0</strong><small>Total points earned</small></div>
+<div class="stat"><div class="stat-title">🌱 Activities</div><strong id="statActivities">0</strong><small>Actions completed</small></div>
+<div class="stat"><div class="stat-title">☁️ CO₂ Estimate</div><strong id="statCarbon">0 kg</strong><small>Latest calculation</small></div>
+<div class="stat"><div class="stat-title">🏅 Current Level</div><strong id="statLevel">Starter</strong><small>Your reward level</small></div>
+</div>
 
-            <p class="subtitle">
-                Join GreenPulse and start your eco journey.
-            </p>
+<div class="grid two-col">
+<div class="panel">
+<h3>🏆 Reward Progress</h3>
+<p class="panel-desc">Earn points by completing eco-friendly activities.</p>
+<div class="progress-meta"><span id="dashLevel">Starter level</span><b id="dashProgressText">0 / 50 points</b></div>
+<div class="progress"><span id="dashProgress" style="width:0%"></span></div>
+<p class="panel-desc" id="nextRewardText">Earn 50 points to unlock Bronze.</p>
+<button class="btn btn-light" onclick="navigate('rewards')">View Rewards →</button>
+</div>
 
-            <form onsubmit="register(event)">
+<div class="panel">
+<h3>Recent Activities</h3>
+<p class="panel-desc">Your latest green actions.</p>
+<div id="recentActivities"><div class="empty">No activities yet.</div></div>
+</div>
+</div>
+</section>
 
-                <div class="input-group">
-                    <label>Full Name</label>
-                    <input type="text" id="regName"
-                    placeholder="Enter your full name" required>
-                </div>
+<!-- FOOTPRINT CALCULATOR -->
 
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" id="regEmail"
-                    placeholder="Enter your email" required>
-                </div>
+<section id="footprint" class="page">
+<div class="page-head">
+<div class="eyebrow">CARBON TRACKER</div>
+<h1>Footprint Diary</h1>
+<p>Calculate your approximate daily carbon footprint.</p>
+</div>
 
-                <div class="input-group">
-                    <label>Password</label>
+<div class="panel">
+<h3>Carbon Footprint Calculator</h3>
+<p class="panel-desc">Enter your travel and electricity usage.</p>
 
-                    <div class="password-wrap">
-                        <input type="password" id="regPassword"
-                        placeholder="Create password" minlength="4" required>
+<div class="form-grid">
+<div class="field">
+<label>Transport Mode</label>
+<select id="transport">
+<option value="0">Walking / Cycling</option>
+<option value="0.05">Bus / Public Transport</option>
+<option value="0.12">Train / Metro</option>
+<option value="0.21">Petrol Car</option>
+<option value="0.18">Two Wheeler</option>
+</select>
+</div>
 
-                        <button type="button" class="toggle"
-                        onclick="togglePassword('regPassword',this)">
-                        Show
-                        </button>
-                    </div>
-                </div>
+<div class="field">
+<label>Distance Travelled (km/day)</label>
+<input type="number" id="distance" min="0" placeholder="Example: 10">
+</div>
 
-                <div class="input-group">
-                    <label>Confirm Password</label>
+<div class="field">
+<label>Electricity Used (kWh/day)</label>
+<input type="number" id="electricity" min="0" placeholder="Example: 3">
+</div>
 
-                    <div class="password-wrap">
-                        <input type="password" id="confirmPassword"
-                        placeholder="Confirm password" required>
-                    </div>
-                </div>
+<div class="field">
+<label>Number of Days</label>
+<input type="number" id="days" min="1" value="1">
+</div>
+</div>
 
-                <button type="submit" class="main-btn">
-                    Create Account →
-                </button>
+<button class="btn btn-primary" onclick="calculateFootprint()">Calculate Footprint</button>
 
-            </form>
+<div class="result" id="carbonResult">
+<div class="eyebrow">ESTIMATED EMISSIONS</div>
+<strong id="carbonValue">0 kg CO₂</strong>
+<p class="panel-desc" id="carbonMessage"></p>
+</div>
+</div>
 
-            <p class="switch-text">
-                Already have an account?
-                <button onclick="showLogin()">Login</button>
-            </p>
+<div class="panel">
+<h3>About this calculation</h3>
+<p class="panel-desc">This project uses simplified illustrative emission factors. Actual emissions vary by vehicle, fuel, electricity source and location. The result is an educational estimate, not an official measurement.</p>
+</div>
+</section>
 
-        </div>
+<!-- ECO ACTIVITIES -->
 
-        <div class="message" id="message"></div>
+<section id="activities" class="page">
+<div class="page-head">
+<div class="eyebrow">DAILY GREEN HABITS</div>
+<h1>Eco Activities</h1>
+<p>Record your eco-friendly actions and earn points.</p>
+</div>
 
-        <div class="footer">
-            © 2026 GreenPulse | Eco Passport Project 🌍
-        </div>
+<div class="panel">
+<h3>Add Eco-Friendly Activity</h3>
+<p class="panel-desc">Select an activity that you completed.</p>
 
-    </div>
+<div class="field">
+<label>Select Activity</label>
+<select id="activitySelect">
+<option value="Used public transport|15|🚌">Used public transport (+15 points)</option>
+<option value="Walked or cycled|10|🚴">Walked or cycled (+10 points)</option>
+<option value="Avoided single-use plastic|10|♻️">Avoided single-use plastic (+10 points)</option>
+<option value="Planted a tree or plant|25|🌳">Planted a tree or plant (+25 points)</option>
+<option value="Saved electricity|10|💡">Saved electricity (+10 points)</option>
+<option value="Saved water|10|💧">Saved water (+10 points)</option>
+<option value="Recycled waste|15|🗑️">Recycled waste (+15 points)</option>
+<option value="Used reusable bottle or bag|5|🧴">Used reusable bottle or bag (+5 points)</option>
+</select>
+</div>
+
+<div class="field">
+<label>Date</label>
+<input type="date" id="activityDate">
+</div>
+
+<button class="btn btn-primary" onclick="addActivity()">+ Add Activity</button>
+</div>
+
+<div class="panel">
+<h3>Activity History</h3>
+<div id="activityHistory"><div class="empty">Your activity history will appear here.</div></div>
+</div>
+</section>
+
+<!-- REWARDS -->
+
+<section id="rewards" class="page">
+<div class="page-head">
+<div class="eyebrow">MILESTONES & ACHIEVEMENTS</div>
+<h1>Rewards & Badges 🏆</h1>
+<p>Complete green activities to unlock your badges.</p>
+</div>
+
+<div class="panel">
+<h3>Your Reward Summary</h3>
+<p class="panel-desc">Your total points decide which badges you have unlocked.</p>
+<div class="progress-meta"><span>Total Eco Points</span><b id="rewardTotal">0 points</b></div>
+<div class="progress"><span id="rewardOverall" style="width:0%"></span></div>
+</div>
+
+<div class="grid reward-grid">
+
+<article class="reward-card bronze">
+<div class="medal">🥉</div>
+<h3>Bronze Badge</h3>
+<div class="threshold">Unlock at 50 points</div>
+<span id="bronzeStatus" class="reward-status">🔒 Locked</span>
+<div class="progress"><span id="bronzeProgress" style="width:0%"></span></div>
+<small id="bronzeText">0 / 50 points</small>
+</article>
+
+<article class="reward-card silver">
+<div class="medal">🥈</div>
+<h3>Silver Badge</h3>
+<div class="threshold">Unlock at 100 points</div>
+<span id="silverStatus" class="reward-status">🔒 Locked</span>
+<div class="progress"><span id="silverProgress" style="width:0%"></span></div>
+<small id="silverText">0 / 100 points</small>
+</article>
+
+<article class="reward-card gold">
+<div class="medal">🥇</div>
+<h3>Gold Badge</h3>
+<div class="threshold">Unlock at 200 points</div>
+<span id="goldStatus" class="reward-status">🔒 Locked</span>
+<div class="progress"><span id="goldProgress" style="width:0%"></span></div>
+<small id="goldText">0 / 200 points</small>
+</article>
 
 </div>
 
+<div class="panel">
+<h3>How to Earn Rewards?</h3>
+<p class="panel-desc">Walk, cycle, save water and electricity, plant trees and recycle waste. Record your activities to earn points.</p>
+<button class="btn btn-light" onclick="navigate('activities')">Add an Activity →</button>
+</div>
+</section>
+
+<!-- ECOPASSPORT -->
+
+<section id="passport" class="page">
+<div class="page-head">
+<div class="eyebrow">YOUR DIGITAL ACHIEVEMENT</div>
+<h1>Digital EcoPassport</h1>
+<p>Your personal record of sustainable activities.</p>
+</div>
+
+<div class="passport">
+<div class="eyebrow" style="color:#c9ef8a">GREENPULSE MEMBER</div>
+<h2 id="passportName">Eco Explorer</h2>
+<p>Your journey towards a greener lifestyle.</p>
+<div class="passport-details">
+<div><small>ECO POINTS</small><b id="passPoints">0</b></div>
+<div><small>ACTIVITIES</small><b id="passActivities">0</b></div>
+<div><small>BADGE LEVEL</small><b id="passLevel">Starter</b></div>
+</div>
+</div>
+
+<div class="panel" style="margin-top:20px">
+<h3>Your Achievements</h3>
+<div id="passportBadges" class="activity-row">🔒 No badges unlocked yet.</div>
+</div>
+
+<button class="btn btn-primary" onclick="window.print()">Print EcoPassport</button>
+</section>
+
+<!-- ECO TIPS -->
+
+<section id="tips" class="page">
+<div class="page-head">
+<div class="eyebrow">LEARN & TAKE ACTION</div>
+<h1>Eco Tips & Insights</h1>
+<p>Simple habits for a sustainable lifestyle.</p>
+</div>
+
+<div class="grid tip-grid">
+<div class="tip-card"><div class="emoji">🚲</div><h3>Choose Greener Travel</h3><p>Walk, cycle or use public transport whenever practical to reduce emissions.</p></div>
+<div class="tip-card"><div class="emoji">💡</div><h3>Save Electricity</h3><p>Switch off lights and fans when they are not in use.</p></div>
+<div class="tip-card"><div class="emoji">💧</div><h3>Save Water</h3><p>Turn off taps when brushing and avoid unnecessary water wastage.</p></div>
+<div class="tip-card"><div class="emoji">♻️</div><h3>Reduce Plastic</h3><p>Carry reusable bags and bottles instead of single-use plastic.</p></div>
+<div class="tip-card"><div class="emoji">🌳</div><h3>Plant Trees</h3><p>Grow plants and support local green spaces and biodiversity.</p></div>
+<div class="tip-card"><div class="emoji">🥗</div><h3>Avoid Food Waste</h3><p>Plan meals and use food wisely to reduce waste.</p></div>
+</div>
+</section>
+
+<div class="footer">© 2026 GreenPulse | Track Your Impact. Make a Difference. 🌱</div>
+</main>
+</div>
+</div>
 
 <script>
+const ACCOUNT_KEY="greenpulseAccount";
+const DATA_KEY="greenpulseData";
+let user=null;
+let data=null;
 
-function showRegister() {
-    document.getElementById("loginForm").classList.add("hidden");
-    document.getElementById("registerForm").classList.remove("hidden");
-    document.getElementById("message").innerText = "";
+function showMessage(message){
+ document.getElementById("authMessage").innerText=message;
 }
 
-function showLogin() {
-    document.getElementById("registerForm").classList.add("hidden");
-    document.getElementById("loginForm").classList.remove("hidden");
-    document.getElementById("message").innerText = "";
+function showRegister(){
+ document.getElementById("loginForm").classList.add("hidden");
+ document.getElementById("registerForm").classList.remove("hidden");
+ showMessage("");
 }
 
-function togglePassword(id, button) {
-    const input = document.getElementById(id);
-
-    if (input.type === "password") {
-        input.type = "text";
-        button.innerText = "Hide";
-    } else {
-        input.type = "password";
-        button.innerText = "Show";
-    }
+function showLogin(){
+ document.getElementById("registerForm").classList.add("hidden");
+ document.getElementById("loginForm").classList.remove("hidden");
+ showMessage("");
 }
 
-function register(event) {
-    event.preventDefault();
-
-    const name = document.getElementById("regName").value.trim();
-    const email = document.getElementById("regEmail").value.trim().toLowerCase();
-    const password = document.getElementById("regPassword").value;
-    const confirm = document.getElementById("confirmPassword").value;
-
-    if (password !== confirm) {
-        document.getElementById("message").innerText =
-        "Passwords do not match!";
-        return;
-    }
-
-    const existing = JSON.parse(localStorage.getItem("greenpulseAccount") || "null");
-
-    if (existing && existing.email === email) {
-        document.getElementById("message").innerText =
-        "This email is already registered. Please login.";
-        return;
-    }
-
-    const account = { name, email, password };
-
-    localStorage.setItem("greenpulseAccount", JSON.stringify(account));
-
-    document.getElementById("message").innerText =
-    "Registration successful! Please login.";
-
-    document.getElementById("regName").value = "";
-    document.getElementById("regEmail").value = "";
-    document.getElementById("regPassword").value = "";
-    document.getElementById("confirmPassword").value = "";
-
-    showLogin();
-    document.getElementById("loginEmail").value = email;
+function togglePassword(id,button){
+ const input=document.getElementById(id);
+ if(input.type==="password"){
+  input.type="text";
+  button.innerText="Hide";
+ }else{
+  input.type="password";
+  button.innerText="Show";
+ }
 }
 
-function login(event) {
-    event.preventDefault();
+function register(event){
+ event.preventDefault();
 
-    const email = document.getElementById("loginEmail").value.trim().toLowerCase();
-    const password = document.getElementById("loginPassword").value;
+ const name=document.getElementById("regName").value.trim();
+ const email=document.getElementById("regEmail").value.trim().toLowerCase();
+ const password=document.getElementById("regPassword").value;
+ const confirm=document.getElementById("confirmPassword").value;
 
-    const account = JSON.parse(localStorage.getItem("greenpulseAccount") || "null");
+ if(password!==confirm){
+  showMessage("Passwords do not match!");
+  return;
+ }
 
-    if (!account) {
-        document.getElementById("message").innerText =
-        "No account found. Please register first.";
-        return;
-    }
+ const existing=JSON.parse(localStorage.getItem(ACCOUNT_KEY)||"null");
 
-    if (account.email === email && account.password === password) {
+ if(existing && existing.email===email){
+  showMessage("This email is already registered. Please login.");
+  return;
+ }
 
-        localStorage.setItem("greenpulseLoggedIn", "true");
+ const account={name,email,password};
+ localStorage.setItem(ACCOUNT_KEY,JSON.stringify(account));
 
-        document.getElementById("message").innerText =
-        "Login successful! Welcome " + account.name + "!";
+ document.getElementById("regName").value="";
+ document.getElementById("regEmail").value="";
+ document.getElementById("regPassword").value="";
+ document.getElementById("confirmPassword").value="";
 
-        // Connect your dashboard page here.
-        // Example: window.location.href = "dashboard.html";
-
-    } else {
-        document.getElementById("message").innerText =
-        "Incorrect email or password!";
-    }
+ showLogin();
+ document.getElementById("loginEmail").value=email;
+ showMessage("Registration successful! Please login.");
 }
 
+function login(event){
+ event.preventDefault();
+
+ const email=document.getElementById("loginEmail").value.trim().toLowerCase();
+ const password=document.getElementById("loginPassword").value;
+ const account=JSON.parse(localStorage.getItem(ACCOUNT_KEY)||"null");
+
+ if(!account){
+  showMessage("No account found. Please register first.");
+  return;
+ }
+
+ if(account.email!==email || account.password!==password){
+  showMessage("Incorrect email or password!");
+  return;
+ }
+
+ user=account;
+ loadUserData();
+ document.getElementById("authScreen").classList.add("hidden");
+ document.getElementById("app").classList.remove("hidden");
+ document.getElementById("topName").textContent=user.name;
+ document.getElementById("welcomeName").textContent=user.name.split(" ")[0];
+ document.getElementById("activityDate").value=new Date().toISOString().slice(0,10);
+ refresh();
+ navigate("dashboard");
+}
+
+function loadUserData(){
+ const all=JSON.parse(localStorage.getItem(DATA_KEY)||"{}");
+ if(!all[user.email]){
+  all[user.email]={points:0,activities:[],carbon:0};
+  localStorage.setItem(DATA_KEY,JSON.stringify(all));
+ }
+ data=all[user.email];
+}
+
+function saveUserData(){
+ const all=JSON.parse(localStorage.getItem(DATA_KEY)||"{}");
+ all[user.email]=data;
+ localStorage.setItem(DATA_KEY,JSON.stringify(all));
+}
+
+function logout(){
+ user=null;
+ data=null;
+ document.getElementById("app").classList.add("hidden");
+ document.getElementById("authScreen").classList.remove("hidden");
+ document.getElementById("loginPassword").value="";
+ showLogin();
+}
+
+function navigate(page){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(page).classList.add("active");
+ document.querySelectorAll(".nav-link").forEach(b=>{
+  b.classList.toggle("active",b.dataset.page===page);
+ });
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function level(){
+ if(data.points>=200)return "Gold";
+ if(data.points>=100)return "Silver";
+ if(data.points>=50)return "Bronze";
+ return "Starter";
+}
+
+function activityHTML(a){
+ return `<div class="activity-row">
+ <div class="activity-info">
+ <div class="activity-icon">${escapeHTML(a.icon)}</div>
+ <div><b>${escapeHTML(a.name)}</b><small>${escapeHTML(a.date)}</small></div>
+ </div>
+ <span class="points">+${a.points} pts</span>
+ </div>`;
+}
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+
+function refresh(){
+ const p=data.points;
+ const a=data.activities;
+ const lvl=level();
+
+ document.getElementById("statPoints").textContent=p;
+ document.getElementById("statActivities").textContent=a.length;
+ document.getElementById("statCarbon").textContent=data.carbon.toFixed(1)+" kg";
+ document.getElementById("statLevel").textContent=lvl;
+
+ const next=p<50?50:p<100?100:200;
+ const previous=p<50?0:p<100?50:100;
+ const progress=p>=200?100:Math.min(100,((p-previous)/(next-previous))*100);
+
+ document.getElementById("dashLevel").textContent=lvl+" level";
+ document.getElementById("dashProgressText").textContent=p+" / "+next+" points";
+ document.getElementById("dashProgress").style.width=progress+"%";
+ document.getElementById("nextRewardText").textContent=
+ p>=200?"You have unlocked all three badges!":
+ "Earn "+(next-p)+" more points to unlock "+(p<50?"Bronze":p<100?"Silver":"Gold")+".";
+
+ document.getElementById("rewardTotal").textContent=p+" points";
+ document.getElementById("rewardOverall").style.width=Math.min(100,p/200*100)+"%";
+
+ [["bronze",50],["silver",100],["gold",200]].forEach(([id,limit])=>{
+  const unlocked=p>=limit;
+  document.getElementById(id+"Status").textContent=unlocked?"✓ Unlocked":"🔒 Locked";
+  document.getElementById(id+"Status").classList.toggle("unlocked",unlocked);
+  document.getElementById(id+"Progress").style.width=Math.min(100,p/limit*100)+"%";
+  document.getElementById(id+"Text").textContent=Math.min(p,limit)+" / "+limit+" points";
+ });
+
+ document.getElementById("recentActivities").innerHTML=
+ a.length?a.slice(-4).reverse().map(activityHTML).join(""):
+ '<div class="empty">No activities yet.</div>';
+
+ document.getElementById("activityHistory").innerHTML=
+ a.length?a.slice().reverse().map(activityHTML).join(""):
+ '<div class="empty">Your activity history will appear here.</div>';
+
+ document.getElementById("passportName").textContent=user.name;
+ document.getElementById("passPoints").textContent=p;
+ document.getElementById("passActivities").textContent=a.length;
+ document.getElementById("passLevel").textContent=lvl;
+
+ const badges=[
+  ["🥉","Bronze",p>=50],
+  ["🥈","Silver",p>=100],
+  ["🥇","Gold",p>=200]
+ ].filter(b=>b[2]);
+
+ document.getElementById("passportBadges").innerHTML=
+ badges.length?badges.map(b=>"<span>"+b[0]+" "+b[1]+" Badge</span>").join("　"):
+ "🔒 No badges unlocked yet. Keep earning points!";
+}
+
+function addActivity(){
+ const parts=document.getElementById("activitySelect").value.split("|");
+ const date=document.getElementById("activityDate").value;
+
+ if(!date){alert("Please select a date.");return;}
+
+ const activity={
+  name:parts[0],
+  points:Number(parts[1]),
+  icon:parts[2],
+  date:date
+ };
+
+ data.activities.push(activity);
+ data.points+=activity.points;
+ saveUserData();
+ refresh();
+ alert("Activity added! You earned "+activity.points+" points.");
+}
+
+function calculateFootprint(){
+ const factor=Number(document.getElementById("transport").value);
+ const distance=Number(document.getElementById("distance").value||0);
+ const electricity=Number(document.getElementById("electricity").value||0);
+ const days=Number(document.getElementById("days").value||1);
+
+ if(distance<0||electricity<0||days<1){
+  alert("Please enter valid values.");
+  return;
+ }
+
+ const total=((factor*distance)+(0.7*electricity))*days;
+
+ data.carbon=total;
+ saveUserData();
+ document.getElementById("carbonValue").textContent=total.toFixed(2)+" kg CO₂";
+ document.getElementById("carbonMessage").textContent=
+ "Estimated footprint for "+days+" day(s). This is an approximate educational estimate.";
+ document.getElementById("carbonResult").style.display="block";
+ refresh();
+}
 </script>
 
 </body>
